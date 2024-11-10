@@ -56,20 +56,17 @@ class TagesschauCoordinator(DataUpdateCoordinator):
         so entities can quickly look up their data.
         """
         try:
-            async with self.websession.get('https://www.butenunbinnen.de/feed/rss/neuste-inhalte100.xml') as response:
+            async with websession.get('https://www.tagesschau.de/api2u/homepage/') as response:
                 response.raise_for_status()
-                response_text = await response.text()
-    
-                dom = minidom.parseString(response_text)
-                elements = dom.getElementsByTagName('entry')
+                response_json = await response.json()
     
                 items = []
-                for element in elements:
+                for element in response_json['news']:
                     items.append({
-                        "title": element.getElementsByTagName('title')[0].firstChild.data,
-                        "summary": element.getElementsByTagName('summary')[0].firstChild.data,
-                        "updated": element.getElementsByTagName('updated')[0].firstChild.data,
-                        "link": element.getElementsByTagName('link')[0].attributes['href'].value
+                        "title": element['title'],
+                        "summary": element['firstSentence'],
+                        "updated": element['date'],
+                        "link": element['shareURL']
                     })
 
                 self.connected = True
