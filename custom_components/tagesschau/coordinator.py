@@ -70,7 +70,7 @@ class TagesschauCoordinator(DataUpdateCoordinator):
                     })
 
                 self.connected = True
-                return ButenunbinnenAPIData(newsitems=items)
+                return TagesschauAPIData(newsitems=items)
         except ClientError as err:
             # This will show entities as unavailable by raising UpdateFailed exception
             raise UpdateFailed(f"Error communicating with API: {err}") from err
