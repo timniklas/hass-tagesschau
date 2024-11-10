@@ -31,7 +31,7 @@ class TagesschauAPIData:
 class TagesschauCoordinator(DataUpdateCoordinator):
     """My coordinator."""
 
-    data: ButenunbinnenAPIData
+    data: TagesschauAPIData
 
     def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry) -> None:
         """Initialize coordinator."""
