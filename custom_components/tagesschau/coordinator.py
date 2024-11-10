@@ -56,7 +56,7 @@ class TagesschauCoordinator(DataUpdateCoordinator):
         so entities can quickly look up their data.
         """
         try:
-            async with websession.get('https://www.tagesschau.de/api2u/homepage/') as response:
+            async with self.websession.get('https://www.tagesschau.de/api2u/homepage/') as response:
                 response.raise_for_status()
                 response_json = await response.json()
     
