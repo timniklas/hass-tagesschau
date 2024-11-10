@@ -16,6 +16,10 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from aiohttp import ClientError
 from xml.dom import minidom
 
+from homeassistant.const import (
+    CONF_REGION
+)
+
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -35,6 +39,9 @@ class TagesschauCoordinator(DataUpdateCoordinator):
 
     def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry) -> None:
         """Initialize coordinator."""
+
+        # Set variables from values entered in config flow setup
+        self.region_id = config_entry.data[CONF_REGION]
 
         # Initialise DataUpdateCoordinator
         super().__init__(
@@ -56,18 +63,19 @@ class TagesschauCoordinator(DataUpdateCoordinator):
         so entities can quickly look up their data.
         """
         try:
-            async with self.websession.get('https://www.tagesschau.de/api2u/news/') as response:
+            async with self.websession.get(f'https://www.tagesschau.de/api2u/news/?regions={self.region_id}') as response:
                 response.raise_for_status()
                 response_json = await response.json()
     
                 items = []
                 for element in response_json['news']:
-                    items.append({
-                        "title": element['title'],
-                        "summary": element['firstSentence'],
-                        "updated": element['date'],
-                        "link": element['shareURL']
-                    })
+                    if 'firstSentence' in element:
+                        items.append({
+                            "title": element['title'],
+                            "summary": element['firstSentence'],
+                            "updated": element['date'],
+                            "link": element['shareURL']
+                        })
 
                 self.connected = True
                 return TagesschauAPIData(newsitems=items)
