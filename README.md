@@ -9,7 +9,7 @@
 
 ## Overview
 
-The Fitness Park Home Assistant Custom Integration allows you to integrate your tagesschau studio with your Home Assistant setup.
+The Tagesschau Home Assistant Custom Integration allows you to integrate the tagesschau news with your Home Assistant setup.
 
 ## Installation
 
