@@ -54,7 +54,7 @@ class NewsSensor(CoordinatorEntity):
 
     @property
     def _newsitem(self):
-        return self.coordinator.data.newsitems[self._newsid]
+        return self.coordinator.data.newsitems[self._newsid - 1]
 
     @callback
     def _handle_coordinator_update(self) -> None:
