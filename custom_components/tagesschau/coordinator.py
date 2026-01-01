@@ -74,7 +74,7 @@ class TagesschauCoordinator(DataUpdateCoordinator):
                             "title": element['title'],
                             "summary": element['firstSentence'],
                             "updated": element['date'],
-                            "link": element['shareURL']
+                            "link": element['detailsweb']
                         })
 
                 self.connected = True
